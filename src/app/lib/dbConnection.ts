@@ -8,5 +8,5 @@ export async function connectDB() {
   const uri = process.env.MONGODB_URI!;
   if (!uri) throw new Error("Falta la variable MONGODB_URI en .env");
 
-  return mongoose.connect(uri, { dbName: "nextauth_db" });
+  return mongoose.connect(uri, { dbName: "waggy" });
 }

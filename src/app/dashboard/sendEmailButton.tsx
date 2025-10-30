@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { signOut } from "next-auth/react";
 import { sendEmail } from "@/services/email";
 
 export default function SendEmailButton() {
@@ -19,20 +18,13 @@ export default function SendEmailButton() {
         "Prueba de email desde dashboard"
       );
 
-      setMessage("✅ " + response.message);
+      setMessage(response.message);
     } catch (error: any) {
       console.error("Error:", error);
-      setMessage("❌ Error: " + (error.response?.data?.error || error.message));
+      setMessage(" Error: " + (error.response?.data?.error || error.message));
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleLogout = () => {
-    signOut({ 
-      callbackUrl: "/login",
-      redirect: true  // ← Agrega esto
-    });
   };
 
   return (
@@ -43,13 +35,6 @@ export default function SendEmailButton() {
         className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition"
       >
         {loading ? "Enviando..." : "Enviar Email de Prueba"}
-      </button>
-
-      <button
-        onClick={handleLogout}
-        className="ml-4 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
-      >
-        Cerrar Sesión
       </button>
       
       {message && (

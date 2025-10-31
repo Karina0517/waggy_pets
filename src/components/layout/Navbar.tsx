@@ -1,27 +1,48 @@
 "use client";
 
-import Link from "next/link";
+import { BsSearchHeart } from "react-icons/bs";
+import { CgProfile } from "react-icons/cg";
+import { MdOutlineShoppingCart } from "react-icons/md";
 import Image from "next/image"; 
 import styles from "./Navbar.module.css";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
+  const router = useRouter();
+
   return (
-    <nav className={ `flex items-center justify-between p-4 ${styles.navbar}`} >
-      <div className="flex items-center">
+    <nav className={styles.nav}>
+      <div className={styles.logoContainer}>
         <Image
-          src="/images/waggy_logo.png" 
-          alt="Logo"
-          width={200} 
-          height={200}
-          className="mt-0 inline-block mr-2"
+          src="/images/waggy_logo.png"
+          alt="Waggy Pets Logo"
+          width={120}
+          height={120}
+          className={styles.logo}
         />
       </div>
-      <ul className="flex gap-6">
-        <li><Link href="/">Inicio</Link></li>
-        <li><Link href="/authors">Autores</Link></li>
-        <li><Link href="/books">Libros</Link></li>
-        <li><Link href="/dashboard">Dashboard</Link></li>
-      </ul>
+
+      <div className={styles.searchContainer}>
+        <BsSearchHeart className={styles.searchIcon} />
+        <input
+          className={styles.input}
+          type="text"
+          placeholder="Encuentra todo para tu mascota..."
+        />
+      </div>
+
+      <div className={styles.iconGroup}>
+        <CgProfile
+          className={styles.icon}
+          title="Perfil"
+          onClick={() => router.push("/login")}
+        />
+        <MdOutlineShoppingCart
+          className={styles.icon}
+          title="Carrito"
+          onClick={() => router.push("/cart")}
+        />
+      </div>
     </nav>
   );
 }

@@ -1,7 +1,14 @@
 // app/dashboard/page.tsx (o donde tengas tu dashboard)
+import { auth } from "@/auth";
 import { DashboardActions } from "../../components/ui/dashboard/DashboardActions";
+import { redirect } from "next/navigation";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const session = await auth();
+
+  if (!session?.user) {
+    redirect("/login");
+  }
   return (
     <div>
       <h1>Dashboard</h1>
@@ -10,4 +17,4 @@ export default function DashboardPage() {
       <DashboardActions />
     </div>
   );
-}
+} 

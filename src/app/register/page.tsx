@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import styles from "./register.module.css";
 
 export default function RegisterPage() {
   const router = useRouter();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [msg, setMsg] = useState("");
 
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     const res = await fetch("/api/register", {
       method: "POST",
@@ -18,23 +20,53 @@ export default function RegisterPage() {
     const data = await res.json();
 
     if (res.ok) {
-      setMsg("✅ Usuario registrado correctamente");
+      setMsg(" Usuario registrado correctamente");
       setTimeout(() => router.push("/login"), 1500);
     } else {
-      setMsg(data.error || "❌ Error al registrar");
+      setMsg(data.error || " Error al registrar");
     }
   };
 
   return (
-    <div className="flex flex-col items-center mt-10">
-      <h1 className="text-2xl mb-4">Registro</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3 w-64">
-        <input placeholder="Nombre" onChange={(e) => setForm({ ...form, name: e.target.value })} />
-        <input placeholder="Email" type="email" onChange={(e) => setForm({ ...form, email: e.target.value })} />
-        <input placeholder="Contraseña" type="password" onChange={(e) => setForm({ ...form, password: e.target.value })} />
-        <button className="bg-blue-600 text-white py-1 rounded">Registrarse</button>
-      </form>
-      {msg && <p className="mt-2">{msg}</p>}
+    <div className={styles.container}>
+      <div className={styles.card}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Crea tu cuenta</h1>
+        </div>
+
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <input
+            placeholder="Nombre"
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            required
+          />
+          <input
+            placeholder="Correo electrónico"
+            type="email"
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            required
+          />
+          <input
+            placeholder="Contraseña"
+            type="password"
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            required
+          />
+
+          <button type="submit" className={styles.button}>
+            Registrarse
+          </button>
+        </form>
+
+        {msg && <p className={styles.message}>{msg}</p>}
+
+        <p className={styles.loginText}>
+          ¿Ya tienes una cuenta?{" "}
+          <Link href="/login" className={styles.loginLink}>
+            Inicia sesión aquí
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

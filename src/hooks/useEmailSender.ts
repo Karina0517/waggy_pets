@@ -13,6 +13,17 @@ interface SendEmailParams {
   subject: string;
 }
 
+interface EmailResponse {
+  message: string;
+  [key: string]: unknown;
+}
+
+interface SendResult {
+  success: boolean;
+  data?: EmailResponse;
+  error?: string;
+}
+
 export function useEmailSender() {
   const [state, setState] = useState<EmailState>({
     loading: false,
@@ -20,7 +31,7 @@ export function useEmailSender() {
     error: false,
   });
 
-  const send = async ({ to, html, subject }: SendEmailParams) => {
+  const send = async ({ to, html, subject }: SendEmailParams): Promise<SendResult> => {
     setState({ loading: true, message: "", error: false });
 
     try {
@@ -31,9 +42,18 @@ export function useEmailSender() {
         error: false 
       });
       return { success: true, data: response };
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error sending email:", error);
-      const errorMsg = error.response?.data?.error || error.message;
+      
+      let errorMsg = "Error desconocido al enviar el email";
+      
+      if (error instanceof Error) {
+        errorMsg = error.message;
+      } else if (typeof error === 'object' && error !== null && 'response' in error) {
+        const errorWithResponse = error as { response?: { data?: { error?: string } } };
+        errorMsg = errorWithResponse.response?.data?.error || errorMsg;
+      }
+      
       setState({ 
         loading: false, 
         message: `Error: ${errorMsg}`, 

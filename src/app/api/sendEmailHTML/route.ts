@@ -1,12 +1,17 @@
-
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
+interface EmailRequestBody {
+  email: string;
+  mensajeHtml: string;
+  asunto: string;
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const { email, mensajeHtml, asunto } = await request.json();
+    const body = await request.json() as EmailRequestBody;
+    const { email, mensajeHtml, asunto } = body;
 
-    // Validar que los campos existan
     if (!email || !mensajeHtml || !asunto) {
       return NextResponse.json(
         { error: "Faltan campos requeridos" },
@@ -18,7 +23,7 @@ export async function POST(request: NextRequest) {
     const passMail = process.env.MAIL_PASS;
 
     if (!userMail || !passMail) {
-      console.error(" Faltan variables de entorno MAIL_USER o MAIL_PASS");
+      console.error("Faltan variables de entorno MAIL_USER o MAIL_PASS");
       return NextResponse.json(
         { error: "Configuración de email incompleta" },
         { status: 500 }
@@ -28,7 +33,7 @@ export async function POST(request: NextRequest) {
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
-      secure: true, // true para 465, false para otros puertos
+      secure: true,
       auth: {
         user: userMail,
         pass: passMail,
@@ -36,11 +41,11 @@ export async function POST(request: NextRequest) {
     });
 
     await transporter.sendMail({
-      from: '"App Metrofem" <no-reply@appmetrofem.com>', // sender address
-      to: email, // list of receivers
-      subject: asunto, // Subject line
-      html: mensajeHtml, // html body
-      text: mensajeHtml, // plain text body
+      from: '"App Waggy Pets" <no-reply@appwaggypets.com>',
+      to: email,
+      subject: asunto,
+      html: mensajeHtml,
+      text: mensajeHtml,
     });
 
     return NextResponse.json(
@@ -48,10 +53,11 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
 
-  } catch (error: any) {
-    console.error(" Error enviando email:", error);
+  } catch (error) {
+    console.error("Error enviando email:", error);
+    const errorMessage = error instanceof Error ? error.message : "Error desconocido";
     return NextResponse.json(
-      { error: "Error al enviar el email", details: error.message },
+      { error: "Error al enviar el email", details: errorMessage },
       { status: 500 }
     );
   }

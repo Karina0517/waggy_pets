@@ -1,31 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "./register.module.css";
 
+interface RegisterForm {
+  name: string;
+  email: string;
+  password: string;
+}
+
+interface RegisterResponse {
+  error?: string;
+  message?: string;
+}
+
 export default function RegisterPage() {
   const router = useRouter();
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [form, setForm] = useState<RegisterForm>({ 
+    name: "", 
+    email: "", 
+    password: "" 
+  });
   const [msg, setMsg] = useState("");
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await fetch("/api/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
-    const data = await res.json();
+    
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      
+      const data: RegisterResponse = await res.json();
 
-    if (res.ok) {
-      setMsg(" Usuario registrado correctamente");
-      setTimeout(() => router.push("/login"), 1500);
-    } else {
-      setMsg(data.error || " Error al registrar");
+      if (res.ok) {
+        setMsg("Usuario registrado correctamente");
+        setTimeout(() => router.push("/login"), 1500);
+      } else {
+        setMsg(data.error || "Error al registrar");
+      }
+    } catch (error) {
+      setMsg("Error de conexión");
+      console.error("Error:", error);
     }
   };
+
+  const handleInputChange = (field: keyof RegisterForm) => 
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setForm({ ...form, [field]: e.target.value });
+    };
 
   return (
     <div className={styles.container}>
@@ -37,19 +64,22 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit} className={styles.form}>
           <input
             placeholder="Nombre"
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            onChange={handleInputChange("name")}
+            value={form.name}
             required
           />
           <input
             placeholder="Correo electrónico"
             type="email"
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            onChange={handleInputChange("email")}
+            value={form.email}
             required
           />
           <input
             placeholder="Contraseña"
             type="password"
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            onChange={handleInputChange("password")}
+            value={form.password}
             required
           />
 

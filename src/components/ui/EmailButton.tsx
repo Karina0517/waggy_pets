@@ -4,6 +4,11 @@ import { useEmailSender } from "@/hooks/useEmailSender";
 import { MiButton } from "../ui/button/Button";
 import styles from "./SimpleEmailButton.module.css";
 
+interface EmailResponse {
+  message: string;
+  [key: string]: unknown;
+}
+
 interface SimpleEmailButtonProps {
   to: string;
   subject: string;
@@ -11,7 +16,7 @@ interface SimpleEmailButtonProps {
   buttonText?: string;
   variant?: "primary" | "primary_1" | "secondary" | "danger" | "info";
   icon?: React.ReactNode;
-  onSuccess?: (response: any) => void;
+  onSuccess?: (response: EmailResponse) => void;
   onError?: (error: string) => void;
 }
 
@@ -30,9 +35,9 @@ export function SimpleEmailButton({
   const handleClick = async () => {
     const result = await send({ to, html, subject });
     
-    if (result.success && onSuccess) {
+    if (result.success && onSuccess && result.data) {
       onSuccess(result.data);
-    } else if (!result.success && onError) {
+    } else if (!result.success && onError && result.error) {
       onError(result.error);
     }
   };

@@ -1,0 +1,129 @@
+.form {
+  width: 100%;
+}
+
+.formContent {
+  padding: 2rem;
+}
+
+.inputGroup {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.inputWrapper {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: #9ca3af;
+  pointer-events: none;
+  transition: color 0.2s ease;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  color: #1f2937;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  outline: none;
+  margin-right: 15px;
+  box-sizing: border-box;
+}
+.input::placeholder {
+  color: #9ca3af;
+}
+
+.input:focus {
+  border-color: #58c47a;
+  box-shadow: 0 0 0 3px rgba(88, 196, 122, 0.1);
+}
+
+.input:focus + .icon {
+  color: #58c47a;
+}
+
+.buttonWrapper {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.buttonWrapper button {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background-color: #58c47a;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.buttonWrapper button:hover {
+  box-shadow: 0 4px 12px rgba(88, 196, 122, 0.3);
+}
+
+.buttonWrapper button:active {
+  transform: translateY(0);
+}
+
+.buttonWrapper button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+}
+
+.errorIcon {
+  width: 20px;
+  height: 20px;
+  color: #ef4444;
+  flex-shrink: 0;
+}
+
+.errorText {
+  font-size: 0.875rem;
+  color: #dc2626;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .formContent {
+    padding: 1.5rem;
+  }
+
+  .inputGroup {
+    margin-bottom: 1.25rem;
+  }
+}

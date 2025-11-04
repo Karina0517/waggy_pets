@@ -1,0 +1,108 @@
+.base {
+  margin-top: 1rem;
+  margin: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+}
+
+.base:focus {
+  box-shadow: 0 0 0 2px var(--ring-color, rgba(0, 0, 0, 0.1));
+}
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.primary {
+  background-color: rgb(56, 189, 248); /* sky-400 */
+  color: white;
+}
+
+.primary:hover {
+  background-color: rgb(2, 132, 199); /* sky-600 */
+}
+
+.primary:focus {
+  --ring-color: rgb(56, 189, 248);
+}
+
+.primary_1 {
+  background-color: #93f62885;
+  color: #395f10da;
+}
+
+.primary_1:hover {
+  background-color: #395f10da;
+  color: white;
+}
+
+.primary_1:focus {
+  --ring-color: rgb(182, 109, 130);
+}
+
+.secondary {
+  background-color: rgb(243, 244, 246); /* gray-100 */
+  color: rgb(55, 65, 81); /* gray-700 */
+  border: 1px solid rgb(209, 213, 219); /* gray-300 */
+}
+
+.secondary:hover {
+  background-color: rgb(229, 231, 235);
+}
+
+.secondary:focus {
+  --ring-color: rgb(209, 213, 219);
+}
+
+.danger {
+  color: rgb(244, 63, 94); /* rose-400 */
+  border: 1px solid rgb(244, 63, 94);
+  background-color: transparent;
+}
+
+.danger:hover {
+  background-color: rgb(244, 63, 94);
+  color: white;
+}
+
+.danger:focus {
+  --ring-color: rgb(253, 164, 175); /* rose-300 */
+}
+
+.info {
+  background-color: rgb(129, 140, 248); /* indigo-400 */
+  color: white;
+}
+
+.info:hover {
+  background-color: rgb(99, 102, 241); /* indigo-500 */
+}
+
+.info:focus {
+  --ring-color: rgb(165, 180, 252); /* indigo-300 */
+}
+
+/* Icon-specific styles */
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* When the button is icon-only make it square and remove extra gap/padding */
+.iconOnly {
+  padding: 0.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  gap: 0;
+}

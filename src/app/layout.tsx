@@ -1,21 +1,22 @@
+import Navbar from "../components/layout/nav/Navbar";
+import Footer from "../components/layout/footer/Footer";
+import Background from "../components/layout/background/Background";
+import { ReactNode } from "react";
+import styles from "./layout.module.css";
 
-import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import Background from "@/components/layout/Background";
+interface RootLayoutProps {
+  children: ReactNode;
+}
 
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
-      <body >
+    <html lang="es" suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <Background />
         <Navbar />
-        <main className="flex-grow">{children}</main>
+        <main className={styles.mainContent}>
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

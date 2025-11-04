@@ -1,0 +1,57 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  /* Anular el padding del layout principal */
+  margin-top: -170px;
+  padding-top: 1rem;
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.header {
+  background: linear-gradient(135deg, #93f628 0%, #58c47a 100%);
+  padding: 2rem;
+  text-align: center;
+}
+
+.title {
+  color: #1e3802;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+.loading {
+  padding: 2rem;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+    margin-top: -200px;
+    padding-top: calc(200px + 1rem);
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .header {
+    padding: 1.5rem;
+  }
+}

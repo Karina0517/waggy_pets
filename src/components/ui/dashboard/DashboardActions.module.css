@@ -1,0 +1,22 @@
+.container {
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.successMessage {
+  color: #16a34a; /* green-600 */
+  margin: 0;
+}
+
+.errorMessage {
+  color: #dc2626; /* red-600 */
+  margin: 0;
+}

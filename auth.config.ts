@@ -1,5 +1,6 @@
 import type { NextAuthConfig } from "next-auth";
 
+// Configuración Edge-compatible (sin dependencias de Node.js)
 export const authConfig = {
   pages: {
     signIn: "/login",
@@ -14,7 +15,7 @@ export const authConfig = {
       const isOnLogin = nextUrl.pathname === "/login";
 
       if (isOnDashboard && !isLoggedIn) {
-        return Response.redirect(new URL("/login", nextUrl));
+        return false; // Redirigirá automáticamente a /login
       }
 
       if (isOnLogin && isLoggedIn) {
@@ -24,5 +25,5 @@ export const authConfig = {
       return true;
     },
   },
-  providers: [],
+  providers: [], // Los providers se configuran en auth.ts
 } satisfies NextAuthConfig;

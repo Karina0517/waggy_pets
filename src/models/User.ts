@@ -23,7 +23,7 @@ const UserSchema = new Schema<IUser>(
     },
     password: {
       type: String,
-      required: [true, "La contraseña es obligatoria"],
+      required: false,
       minlength: [6, "La contraseña debe tener al menos 6 caracteres"],
     },
     role: {

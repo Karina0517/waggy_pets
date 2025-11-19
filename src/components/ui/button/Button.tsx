@@ -24,9 +24,7 @@ export const MiButton = ({
 }: ButtonProps) => {
   const variantClass = styles[variant] || styles.primary;
 
-  // If iconOnly and there's no visible text, ensure an accessible label is provided
   if (iconOnly && !text && !ariaLabel) {
-    // eslint-disable-next-line no-console
     console.warn(
       'MiButton: using `iconOnly` without `text` requires `ariaLabel` for accessibility.'
     );

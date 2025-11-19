@@ -10,11 +10,13 @@
   gap: 0.5rem;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  border: none;
   outline: none;
-}
+ }
 
 .base:focus {
-  box-shadow: 0 0 0 2px var(--ring-color, rgba(0, 0, 0, 0.1));
+  outline: none; 
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2); 
 }
 
 .disabled {
@@ -23,12 +25,12 @@
 }
 
 .primary {
-  background-color: rgb(56, 189, 248); /* sky-400 */
+  background-color: rgb(56, 189, 248); 
   color: white;
 }
 
 .primary:hover {
-  background-color: rgb(2, 132, 199); /* sky-600 */
+  background-color: rgb(2, 132, 199); 
 }
 
 .primary:focus {

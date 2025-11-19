@@ -1,75 +1,82 @@
+// app/page.tsx (con modal)
+'use client';
+
 import { MiButton } from "@/components/ui/button/Button";
 import { Card } from "@/components/ui/card/Card";
+import { ProductFormModal } from '@/components/ProductFormModal';
 import styles from './page.module.css';
-import Image from "next/image";
+import { useProducts } from '@/hooks/useProducts';
+import { useState } from 'react';
 
 export default function Home() {
-   const products = [
-    {
-      id: 1,
-      title: 'Alimento Premium para Perros',
-      description: 'Nutrición balanceada con ingredientes naturales',
-      image: 'https://images.pexels.com/photos/1458916/pexels-photo-1458916.jpeg?auto=compress&cs=tinysrgb&w=800',
-      price: '49.99',
-      originalPrice: '69.99',
-      stock: 15,
-      rating: 4.8,
-      badges: ['Nuevo', 'Oferta'],
-      items: ['100% Natural', 'Sin conservantes', 'Alto en proteínas'],
-    },
-    {
-      id: 2,
-      title: 'Juguete Interactivo',
-      description: 'Diversión garantizada para tu mascota',
-      image: 'https://images.pexels.com/photos/1390361/pexels-photo-1390361.jpeg?auto=compress&cs=tinysrgb&w=800',
-      price: '24.99',
-      stock: 28,
-      rating: 4.5,
-      badges: ['Popular'],
-      items: ['Resistente', 'Material seguro', 'Fácil de limpiar'],
-    },
-    {
-      id: 3,
-      title: 'Cama Acolchada',
-      description: 'Comodidad premium para el descanso',
-      image: 'https://images.pexels.com/photos/406014/pexels-photo-406014.jpeg?auto=compress&cs=tinysrgb&w=800',
-      price: '89.99',
-      originalPrice: '119.99',
-      stock: 8,
-      rating: 4.9,
-      badges: ['Oferta'],
-      items: ['Lavable', 'Ortopédica', 'Anti-alergénica'],
-    },
-    {
-      id: 4,
-      title: 'Kit de Aseo Completo',
-      description: 'Todo lo necesario para el cuidado',
-      image: 'https://images.pexels.com/photos/4588065/pexels-photo-4588065.jpeg?auto=compress&cs=tinysrgb&w=800',
-      price: '35.99',
-      stock: 20,
-      rating: 4.7,
-      items: ['Cepillo', 'Champú', 'Cortauñas', 'Toalla'],
-    } ];
+  const { products, loading, error, refetch } = useProducts();
+  const [showFormModal, setShowFormModal] = useState(false);
+
+  const handleProductCreated = async () => {
+    await refetch();
+  };
+
+  if (loading) {
+    return (
+      <div className={styles.loading}>
+        <p>Cargando productos...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.error}>
+        <p>Error: {error}</p>
+      </div>
+    );
+  }
+
   return (
-          <div className={styles.grid}>
-            {products.map((product) => (
-              <Card
-                key={product.id}
-                title={product.title}
-                description={product.description}
-                image={product.image}
-                price={product.price}
-                originalPrice={product.originalPrice}
-                stock={product.stock}
-                rating={product.rating}
-                badges={product.badges}
-                items={product.items}
-              >
-                <MiButton variant="primary" text="Comprar" />
-                <MiButton variant="secondary" text="Ver más" />
-              </Card>
-            ))}
+    <main className={styles.main}>
+      <div className={styles.header}>
+        <h1>Mis Productos</h1>
+        <MiButton 
+          variant="primary_1" 
+          text="Añadir Producto"
+          click={() => setShowFormModal(true)}
+        />
+      </div>
+
+      <div className={styles.grid}>
+        {products.length === 0 ? (
+          <div className={styles.empty}>
+            <p>No hay productos disponibles</p>
+            <MiButton 
+              variant="primary" 
+              text="Añadir tu primer producto"
+              click={() => setShowFormModal(true)}
+            />
           </div>
+        ) : (
+          products.map((product, index) => (
+            <Card
+              key={product.id || `product-${index}`}
+              title={product.name}
+              description={product.description}
+              image={product.mainImage?.url || 'https://via.placeholder.com/400'}
+              price={product.price.toString()}
+              stock={product.quantity}
+              badges={[product.category]}
+              items={[`Marca: ${product.brand}`]}
+            >
+              <MiButton variant="primary_1" text="Comprar" />
+              <MiButton variant="secondary" text="Ver más" />
+            </Card>
+          ))
+        )}
+      </div>
+
+      <ProductFormModal
+        isOpen={showFormModal}
+        onClose={() => setShowFormModal(false)}
+        onSuccess={handleProductCreated}
+      />
+    </main>
   );
 }
-

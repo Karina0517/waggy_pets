@@ -29,14 +29,14 @@ export function DashboardActions() {
         <MiButton
           variant="primary"
           text={loading ? "Enviando..." : "Enviar Email de Prueba"}
-          click={handleSendEmail}
+          onClick={handleSendEmail}
           disabled={loading}
         />
 
         <MiButton
           variant="danger"
           text="Cerrar Sesión"
-          click={handleLogout}
+          onClick={handleLogout}
         />
       </div>
       

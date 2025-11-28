@@ -1,0 +1,22 @@
+name: Cron - send email (SMTP)
+
+on:
+  schedule:
+    - cron: '0 15 * * *'   # A las 10 am colombia
+  workflow_dispatch: {}   
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send email via SMTP
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.MAIL_USER }}
+          password: ${{ secrets.MAIL_PASS }}
+          subject: "Correo programado desde GitHub Actions"
+          body: "Hola — este correo se envía automáticamente."
+          to: ${{ secrets.FROM_EMAIL }}
+          from: "No Reply <${{ secrets.FROM_EMAIL }}>"

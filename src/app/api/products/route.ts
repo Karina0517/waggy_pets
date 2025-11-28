@@ -1,4 +1,3 @@
-// app/api/products/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import * as yup from "yup";
 import { connectDB } from "@/app/lib/dbConnection";
@@ -9,7 +8,6 @@ import Product, {
 } from "@/models/product";
 import cloudinary from "@/app/lib/cloudinary";
 
-// ==================== POST - Crear producto ====================
 export async function POST(request: NextRequest) {
   try {
     await connectDB();
@@ -41,7 +39,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// ==================== GET - Obtener productos ====================
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
@@ -70,7 +67,6 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// ==================== PUT - Actualizar producto ====================
 export async function PUT(request: NextRequest) {
   try {
     await connectDB();
@@ -92,7 +88,6 @@ export async function PUT(request: NextRequest) {
         stripUnknown: true,
       });
 
-      // Opcional: Manejo de reemplazo de imágenes en Cloudinary
       if (validated.images) {
         const existing = await Product.findById(id);
         if (existing) {
@@ -104,7 +99,6 @@ export async function PUT(request: NextRequest) {
             (pid: string) => !newPublicIds.includes(pid)
           );
 
-          // Eliminar imágenes antiguas que ya no están
           if (toDelete.length > 0) {
             await Promise.all(
               toDelete.map((pid: string) => cloudinary.uploader.destroy(pid))
@@ -113,7 +107,6 @@ export async function PUT(request: NextRequest) {
         }
       }
 
-      // Opcional: Actualizar mainImage
       if (validated.mainImage) {
         const existing = await Product.findById(id);
         if (
@@ -155,7 +148,6 @@ export async function PUT(request: NextRequest) {
   }
 }
 
-// ==================== DELETE - Eliminar producto ====================
 export async function DELETE(request: NextRequest) {
   try {
     await connectDB();
@@ -177,7 +169,6 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    // Borrar imágenes de Cloudinary
     if (product.images && product.images.length > 0) {
       const deletePromises = product.images.map((img: any) =>
         cloudinary.uploader.destroy(img.publicId)

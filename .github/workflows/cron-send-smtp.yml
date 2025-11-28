@@ -16,7 +16,7 @@ jobs:
           server_port: 587
           username: ${{ secrets.MAIL_USER }}
           password: ${{ secrets.MAIL_PASS }}
-          subject: "Correo programado desde GitHub Actions"
-          body: "Hola — este correo se envía automáticamente."
-          to: ${{ secrets.FROM_EMAIL }}
+          subject: "Correo programado con GitHub Actions"
+          body: "Hola — este correo se envía automáticamente a las 10 am hora de Colombia."
+          to: ${{ secrets.TO_EMAIL }}
           from: "No Reply <${{ secrets.FROM_EMAIL }}>"

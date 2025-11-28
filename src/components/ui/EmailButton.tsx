@@ -14,7 +14,7 @@ interface SimpleEmailButtonProps {
   subject: string;
   html: string;
   buttonText?: string;
-  variant?: "primary" | "primary_1" | "secondary" | "danger" | "info";
+  variant?: "primary" | "secondary" | "ghost" | "danger" | "success";
   icon?: React.ReactNode;
   onSuccess?: (response: EmailResponse) => void;
   onError?: (error: string) => void;

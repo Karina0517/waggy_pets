@@ -26,12 +26,6 @@ export function DashboardActions() {
   return (
     <div className={styles.container}>
       <div className={styles.buttonGroup}>
-        <MiButton
-          variant="primary"
-          text={loading ? "Enviando..." : "Enviar Email de Prueba"}
-          onClick={handleSendEmail}
-          disabled={loading}
-        />
 
         <MiButton
           variant="danger"

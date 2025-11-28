@@ -1,0 +1,51 @@
+{
+  "common": {
+    "home": "Home",
+    "products": "Products",
+    "about": "About",
+    "contact": "Contact",
+    "language": "Language",
+    "loading": "Loading...",
+    "error": "Error"
+  },
+  "navigation": {
+    "cart": "Cart",
+    "login": "Log in"
+  },
+  "hero": {
+    "title": "Everything for your best friend",
+    "subtitle": "Happiness for your dog",
+    "description": "Find everything your best friend needs: collars, toys, beds and more. Quality and design for happy dogs.",
+    "imageAlt": "Happy dog with accessories",
+    "buttons": {
+      "addProduct": "Add Product",
+      "shopAll": "Shop All",
+      "viewNew": "View New"
+    },
+    "stats": {
+      "products": "Products",
+      "happyDogs": "Happy Dogs",
+      "rating": "Rating",
+      "freeShipping": "Free Shipping",
+      "freeShippingValue": "on orders +$50"
+    }
+  },
+  "products": {
+    "title": "Our Products",
+    "price": "Price",
+    "addToCart": "Add to cart",
+    "quantity": "Quantity",
+    "brand": "Brand",
+    "category": "Category",
+    "description": "Description"
+  },
+  "forms": {
+    "name": "Name",
+    "email": "Email",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit"
+  }
+}

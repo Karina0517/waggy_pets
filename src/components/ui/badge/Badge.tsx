@@ -1,20 +1,28 @@
+import React from 'react';
+import styles from './badge.module.css';
+
 interface BadgeProps {
   text: string;
-  color?: 'pink' | 'blue' | 'green' | 'dafault';
+  variant?: 'default' | 'success' | 'warning' | 'danger' | 'info' | 'new';
+  size?: 'sm' | 'md';
+  icon?: React.ReactNode;
 }
 
-export const Badge: React.FC<BadgeProps> = ({ text, color = 'pink' }) => {
-  const colorClasses: Record<string, string> = {
-    pink: 'bg-[#D9ABB6]/10 text-[#D9ABB6] border border-[#D9ABB6]/20',
-    blue: 'bg-blue-500/10 text-blue-500 border border-blue-500/20',
-    green: 'bg-green-500/10 text-green-500 border border-green-500/20',
-    default: "bg-gray-500"
-  };
+export const Badge: React.FC<BadgeProps> = ({ 
+  text, 
+  variant = 'default',
+  size = 'sm',
+  icon
+}) => {
+  const classes = [
+    styles.base,
+    styles[variant],
+    styles[size]
+  ].join(' ');
 
   return (
-    <span
-      className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${colorClasses[color]}`}
-    >
+    <span className={classes}>
+      {icon && <span className={styles.icon}>{icon}</span>}
       {text}
     </span>
   );

@@ -122,7 +122,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             <MiButton
               variant="secondary"
               text="Cancelar"
-              click={onCancel}
+              onClick={onCancel}
             />
           )}
         </div>

@@ -2,47 +2,64 @@ import React from "react";
 import styles from "./button.module.css";
 
 interface ButtonProps {
-  variant?: "primary" | "primary_1" | "secondary" | "danger" | "info";
+  variant?: "primary" | "secondary" | "ghost" | "danger" | "success";
+  size?: "sm" | "md" | "lg";
   text?: string;
   disabled?: boolean;
-  click?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
   icon?: React.ReactNode;
-  iconOnly?: boolean;
+  iconPosition?: "left" | "right";
+  fullWidth?: boolean;
+  type?: "button" | "submit" | "reset";
   ariaLabel?: string;
+  loading?: boolean;
 }
 
 export const MiButton = ({
   variant = "primary",
+  size = "md",
   text,
   disabled = false,
-  click,
+  onClick,
   className = "",
   icon,
-  iconOnly = false,
+  iconPosition = "left",
+  fullWidth = false,
+  type = "button",
   ariaLabel,
+  loading = false,
 }: ButtonProps) => {
-  const variantClass = styles[variant] || styles.primary;
-
-  if (iconOnly && !text && !ariaLabel) {
-    console.warn(
-      'MiButton: using `iconOnly` without `text` requires `ariaLabel` for accessibility.'
-    );
-  }
-
-  const classes = [styles.base, variantClass, disabled ? styles.disabled : "", className];
-  if (iconOnly) classes.push(styles.iconOnly);
+  const classes = [
+    styles.base,
+    styles[variant],
+    styles[size],
+    fullWidth ? styles.fullWidth : "",
+    disabled || loading ? styles.disabled : "",
+    className
+  ].filter(Boolean).join(" ");
 
   return (
     <button
-      onClick={click}
-      disabled={disabled}
-      className={classes.join(" ")}
-      aria-label={iconOnly && !text ? ariaLabel : undefined}
-      title={iconOnly && !text ? ariaLabel : undefined}
+      type={type}
+      onClick={onClick}
+      disabled={disabled || loading}
+      className={classes}
+      aria-label={ariaLabel}
     >
-      {icon && <span className={styles.icon}>{icon}</span>}
-      {!iconOnly && text}
+      {loading ? (
+        <span className={styles.loader} />
+      ) : (
+        <>
+          {icon && iconPosition === "left" && (
+            <span className={styles.icon}>{icon}</span>
+          )}
+          {text && <span>{text}</span>}
+          {icon && iconPosition === "right" && (
+            <span className={styles.icon}>{icon}</span>
+          )}
+        </>
+      )}
     </button>
   );
 };

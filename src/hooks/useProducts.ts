@@ -52,7 +52,7 @@ export const useProducts = (): UseProductsReturn => {
     try {
       const updatedProduct = await productService.updateProduct(id, data);
       setProducts(prevProducts => 
-        prevProducts.map(p => p.id === id ? updatedProduct : p)
+        prevProducts.map(p => p._id === id ? updatedProduct : p)
       );
       return updatedProduct;
     } catch (err) {
@@ -69,7 +69,7 @@ export const useProducts = (): UseProductsReturn => {
     try {
       await productService.deleteProduct(id);
       setProducts(prevProducts => 
-        prevProducts.filter(p => p.id !== id)
+        prevProducts.filter(p => p._id !== id)
       );
     } catch (err) {
       setError('Error al eliminar producto');

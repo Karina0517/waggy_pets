@@ -1,4 +1,5 @@
 import mongoose, { Schema, Model } from "mongoose";
+import * as yup from "yup";
 
 export interface IProduct {
   name: string;
@@ -7,83 +8,168 @@ export interface IProduct {
   images: Array<{
     url: string;
     publicId: string;
-    width: number;
-    height: number;
   }>;
   mainImage: {
     url: string;
     publicId: string;
   };
-  category: {
-    type: String,
-    required: [true, "La categoría es obligatoria"],
- },
+  category: string;
   price: number;
   quantity: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
 }
 
-const ProductSchema = new Schema<IProduct>(
+// ==================== YUP SCHEMAS (EXPORTADOS) ====================
+
+const cloudinaryUrlRegex = /^https:\/\/res\.cloudinary\.com\/.+\/image\/upload\/.+$/;
+
+export const imageShape = yup.object({
+  url: yup
+    .string()
+    .required("La URL es obligatoria")
+    .matches(cloudinaryUrlRegex, "URL no válida de Cloudinary"),
+  publicId: yup.string().required("El publicId es obligatorio"),
+  width: yup
+    .number()
+    .positive("Width debe ser positivo")
+    .required("El width es obligatorio"),
+  height: yup
+    .number()
+    .positive("Height debe ser positivo")
+    .required("El height es obligatorio"),
+}).noUnknown(true);
+
+export const mainImageShape = yup.object({
+  url: yup
+    .string()
+    .required("La URL del mainImage es obligatoria")
+    .matches(cloudinaryUrlRegex, "URL no válida de Cloudinary"),
+  publicId: yup.string().required("El publicId del mainImage es obligatorio"),
+}).noUnknown(true);
+
+// Schema para CREAR productos (todos los campos requeridos)
+export const createProductSchema: yup.ObjectSchema<any> = yup
+  .object({
+    name: yup
+      .string()
+      .trim()
+      .required("El nombre es obligatorio")
+      .min(2, "Mínimo 2 caracteres")
+      .max(200, "Máximo 200 caracteres"),
+    brand: yup
+      .string()
+      .trim()
+      .required("La marca es obligatoria")
+      .max(100, "Máximo 100 caracteres"),
+    description: yup
+      .string()
+      .trim()
+      .required("La descripción es obligatoria")
+      .min(10, "Mínimo 10 caracteres")
+      .max(4000, "Máximo 4000 caracteres"),
+    images: yup
+      .array()
+      .of(imageShape)
+      .min(1, "Debes enviar al menos 1 imagen")
+      .max(10, "Máximo 10 imágenes")
+      .required("images es obligatorio"),
+    mainImage: mainImageShape.required("mainImage es obligatorio"),
+    category: yup
+      .string()
+      .trim()
+      .required("La categoría es obligatoria")
+      .max(120, "Máximo 120 caracteres"),
+    price: yup
+      .number()
+      .required("El precio es obligatorio")
+      .min(0, "No puede ser negativo"),
+    quantity: yup
+      .number()
+      .required("La cantidad es obligatoria")
+      .min(0, "No puede ser negativa"),
+    createdAt: yup.date().nullable().notRequired(),
+    updatedAt: yup.date().nullable().notRequired(),
+  })
+  .noUnknown(true);
+
+// Schema para ACTUALIZAR productos (todos los campos opcionales)
+export const updateProductSchema = yup.object({
+  name: yup
+    .string()
+    .trim()
+    .min(2, "Mínimo 2 caracteres")
+    .max(200, "Máximo 200 caracteres")
+    .notRequired(),
+  brand: yup
+    .string()
+    .trim()
+    .max(100, "Máximo 100 caracteres")
+    .notRequired(),
+  description: yup
+    .string()
+    .trim()
+    .min(10, "Mínimo 10 caracteres")
+    .max(4000, "Máximo 4000 caracteres")
+    .notRequired(),
+  images: yup
+    .array()
+    .of(imageShape)
+    .min(1, "Debes enviar al menos 1 imagen")
+    .max(10, "Máximo 10 imágenes")
+    .notRequired(),
+  mainImage: mainImageShape.notRequired(),
+  category: yup
+    .string()
+    .trim()
+    .max(120, "Máximo 120 caracteres")
+    .notRequired(),
+  price: yup.number().min(0, "No puede ser negativo").notRequired(),
+  quantity: yup.number().min(0, "No puede ser negativa").notRequired(),
+  createdAt: yup.date().nullable().notRequired(),
+  updatedAt: yup.date().nullable().notRequired(),
+}).noUnknown(true);
+
+// Helper para formatear errores de Yup
+export function formatYupErrors(err: yup.ValidationError) {
+  const errors: Record<string, string[]> = {};
+  err.inner.forEach((e) => {
+    const key = e.path || "_error";
+    if (!errors[key]) errors[key] = [];
+    errors[key].push(e.message);
+  });
+  return errors;
+}
+
+// ==================== MONGOOSE SCHEMA ====================
+
+const productSchema = new Schema<IProduct>(
   {
-    name: {
-      type: String,
-      required: [true, "El nombre del producto es obligatorio"],
-    },
-    brand: {
-      type: String,
-      required: [true, "La marca es obligatoria"],
-    },
-    description: {
-      type: String,
-      required: [true, "La descripción es obligatoria"],
-    },
+    name: { type: String, required: true, trim: true },
+    brand: { type: String, required: true, trim: true },
+    description: { type: String, required: true, trim: true },
     images: [
       {
-        url: {
-          type: String,
-          required: true,
-        },
-        publicId: {
-          type: String,
-          required: true,
-        },
-        width: {
-          type: Number,
-          required: true,
-        },
-        height: {
-          type: Number,
-          required: true,
-        },
+        url: { type: String, required: true },
+        publicId: { type: String, required: true },
+        width: { type: Number, required: true },
+        height: { type: Number, required: true },
       },
     ],
     mainImage: {
-      url: {
-        type: String,
-        required: false,
-      },
-      publicId: {
-        type: String,
-        required: false,
-      },
+      url: { type: String, required: true },
+      publicId: { type: String, required: true },
     },
-    price: {
-      type: Number,
-      required: [true, "El precio es obligatorio"],
-      min: [0, "El precio no puede ser negativo"],
-    },
-    quantity: {
-      type: Number,
-      required: [true, "La cantidad es obligatoria"],
-      min: [0, "La cantidad no puede ser negativa"],
-      default: 0,
-    },
+    category: { type: String, required: true, trim: true },
+    price: { type: Number, required: true },
+    quantity: { type: Number, required: true },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
 const Product: Model<IProduct> =
-  mongoose.models.Product || mongoose.model<IProduct>("Product", ProductSchema);
+  mongoose.models.Product || mongoose.model<IProduct>("Product", productSchema);
 
 export default Product;

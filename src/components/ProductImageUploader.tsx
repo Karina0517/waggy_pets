@@ -95,10 +95,10 @@ export const ProductImageUploader: React.FC<ProductImageUploaderProps> = ({
       />
 
       {mainImage && (
-        <div className="border-2 border-blue-500 rounded-lg p-4">
+        <div className="border-2 border-green-700 rounded-lg p-4 bg-green-50">
           <h3 className="text-lg font-semibold mb-3 text-gray-800 flex items-center gap-2">
             Imagen Principal
-            <Badge text="Principal" color="blue" />
+            <Badge text="Principal" variant='success' />
           </h3>
           <div className="relative w-full max-w-md mx-auto">
             <Image
@@ -130,7 +130,6 @@ export const ProductImageUploader: React.FC<ProductImageUploaderProps> = ({
           </div>
         </div>
       )}
-
       {images.length === 0 && (
         <div className="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
           <p className="text-gray-500">No hay imágenes cargadas</p>

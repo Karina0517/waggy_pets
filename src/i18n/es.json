@@ -1,0 +1,51 @@
+{
+  "common": {
+    "home": "Inicio",
+    "products": "Productos",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "language": "Idioma",
+    "loading": "Cargando...",
+    "error": "Error"
+  },
+  "navigation": {
+    "cart": "Carrito",
+    "login": "Iniciar sesión"
+  },
+  "hero": {
+    "title": "Todo para tu mejor amigo",
+    "subtitle": "Felicidad para tu perro",
+    "description": "Encuentra todo lo que tu mejor amigo necesita: collares, juguetes, camas y más. Calidad y diseño para perros felices.",
+    "imageAlt": "Perro feliz con accesorios",
+    "buttons": {
+      "addProduct": "Añadir Producto",
+      "shopAll": "Ver todo",
+      "viewNew": "Ver novedades"
+    },
+    "stats": {
+      "products": "Productos",
+      "happyDogs": "Perritos felices",
+      "rating": "Rating",
+      "freeShipping": "Envío gratis",
+      "freeShippingValue": "en pedidos +$50"
+    }
+  },
+  "products": {
+    "title": "Nuestros Productos",
+    "price": "Precio",
+    "addToCart": "Agregar al carrito",
+    "quantity": "Cantidad",
+    "brand": "Marca",
+    "category": "Categoría",
+    "description": "Descripción"
+  },
+  "forms": {
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "submit": "Enviar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar"
+  }
+}

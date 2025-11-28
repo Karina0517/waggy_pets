@@ -3,8 +3,7 @@ import Image from 'next/image';
 import { MiButton } from './ui/button/Button';
 import { Badge } from './ui/badge/Badge';
 import { TrashIcon, StarIcon } from '@heroicons/react/24/outline';
-import { StarIcon as StarSolidIcon } from '@heroicons/react/24/solid';
-import { div } from 'framer-motion/client';
+import styles from './ImageCard.module.css';
 
 interface ImageCardProps {
   imageUrl: string;
@@ -19,40 +18,39 @@ export const ImageCard: React.FC<ImageCardProps> = ({
   isMain = false,
   onSetMain,
   onDelete,
-  showActions = true
+  showActions = true,
 }) => {
+  const cardClasses = [
+    styles.card,
+    isMain ? styles.main : ''
+  ].join(' ');
+
   return (
-    
-    <div 
-      className={`relative group cursor-pointer border-2 rounded-lg overflow-hidden transition-all ${
-        isMain 
-          ? 'border-blue-500 shadow-lg' 
-          : 'border-gray-200 hover:border-blue-300'
-      }`}
-    >
+    <div className={cardClasses}>
       <Image
         src={imageUrl}
         alt="Product image"
         width={200}
         height={200}
-        className="object-cover w-full h-48"
+        className={styles.image}
       />
       
       {isMain && (
-        <div className="absolute top-2 left-2">
-          <Badge text="★ Principal" color="blue" />
+        <div className={styles.badgeContainer}>
+          <Badge text="★ Principal" variant='success' />
         </div>
       )}
 
       {showActions && (
-        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all flex items-center justify-center gap-2">
+        <div className={styles.actionsOverlay}>
           {!isMain && onSetMain && (
             <MiButton
-              variant="info"
+              variant="success" 
               icon={<StarIcon className="w-4 h-4" />}
               text="Principal"
-              click={onSetMain}
-              className="opacity-0 group-hover:opacity-100 transition-opacity text-xs"
+              onClick={onSetMain} 
+              className={styles.actionButton}
+              size="sm"
             />
           )}
           
@@ -61,8 +59,9 @@ export const ImageCard: React.FC<ImageCardProps> = ({
               variant="danger"
               icon={<TrashIcon className="w-4 h-4" />}
               text="Eliminar"
-              click={onDelete}
-              className="opacity-0 group-hover:opacity-100 transition-opacity text-xs"
+              onClick={onDelete} 
+              className={styles.actionButton}
+              size="sm"
             />
           )}
         </div>

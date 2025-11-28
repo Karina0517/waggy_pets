@@ -4,8 +4,6 @@ import axios from 'axios';
 export interface UploadedImage {
   url: string;
   publicId: string;
-  width: number;
-  height: number;
 }
 
 export interface ProductImages {
@@ -27,7 +25,7 @@ export interface ProductFormData {
 
 
 export interface Product extends ProductFormData {
-  id: string;
+  _id: string;
   originalPrice?: number;
   rating?: number;
   createdAt?: Date;
@@ -82,8 +80,7 @@ export const imageService = {
     return {
       url: response.data.secure_url,
       publicId: response.data.public_id,
-      width: response.data.width,
-      height: response.data.height,
+
     };
   },
 

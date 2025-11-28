@@ -14,7 +14,6 @@
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
 }
 
-/* Header del formulario */
 .formHeader {
   display: flex;
   justify-content: space-between;
@@ -34,7 +33,6 @@
   margin: 0;
 }
 
-/* Secciones del formulario */
 .formSection {
   margin-bottom: 2rem;
 }
@@ -156,7 +154,6 @@
   padding-left: 2.5rem;
 }
 
-/* Sección de imágenes */
 .imageSection {
   background: #fafafa;
   border: 2px dashed #cbd5e0;

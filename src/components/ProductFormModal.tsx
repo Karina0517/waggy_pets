@@ -1,4 +1,4 @@
-// components/molecules/ProductFormModal.tsx
+import React from 'react';
 import { ProductForm } from '@/components/ProductForm';
 import styles from './modal.module.css';
 
@@ -6,12 +6,18 @@ interface ProductFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  initialData?: any; 
+  isEditing?: boolean; 
+  onDelete?: (id: string) => void;
 }
 
 export const ProductFormModal: React.FC<ProductFormModalProps> = ({
   isOpen,
   onClose,
-  onSuccess
+  onSuccess,
+  initialData, 
+  isEditing,
+  onDelete,
 }) => {
   if (!isOpen) return null;
 
@@ -27,6 +33,9 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
             onClose();
           }}
           onCancel={onClose}
+          initialData={initialData}
+          isEditing={isEditing}    
+          onDelete={onDelete}
         />
       </div>
     </div>

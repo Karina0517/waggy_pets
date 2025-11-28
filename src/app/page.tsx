@@ -1,7 +1,6 @@
 import Navbar from '@/components/layout/nav/Navbar';
 import { Hero } from '@/components/Hero';
 import { ProductSection } from '@/components/product-section/ProductSection';
-import { CategorySection } from '@/components/CategorySection';
 import { Footer } from '@/components/layout/footer/Footer';
 
 export default function Home() {
@@ -10,7 +9,6 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Hero />
         <ProductSection />
-        <CategorySection />
       </div>
     </main>
   );

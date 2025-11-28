@@ -5,8 +5,9 @@
     "about": "Acerca de",
     "contact": "Contacto",
     "language": "Idioma",
-    "loading": "Cargando...",
-    "error": "Error"
+    "loading": "Cargando",
+    "error": "Error",
+    "search": "Buscar productos para tu peludo"
   },
   "navigation": {
     "cart": "Carrito",
@@ -19,7 +20,7 @@
     "imageAlt": "Perro feliz con accesorios",
     "buttons": {
       "addProduct": "Añadir Producto",
-      "shopAll": "Ver todo",
+      "shopAll": "Ver todos los productos",
       "viewNew": "Ver novedades"
     },
     "stats": {

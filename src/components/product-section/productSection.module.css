@@ -1,56 +1,148 @@
+/* Contenedor principal con un fondo sutil */
 .section {
-  padding: 3rem 0;
+  padding: 4rem 2rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
+/* Header de la sección */
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
+  align-items: flex-end; /* Alinea el botón con la línea base del texto */
+  margin-bottom: 3rem;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.5rem;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .titleGroup {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  max-width: 600px;
 }
 
 .title {
   font-family: 'Poppins', sans-serif;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #0F1724;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1a1a1a;
   margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  position: relative;
+}
+
+/* Pequeño detalle decorativo bajo el título */
+.title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: #58c47a; /* Tu color verde de marca */
+  margin-top: 0.5rem;
+  border-radius: 2px;
 }
 
 .subtitle {
   font-family: 'Poppins', sans-serif;
-  font-size: 1rem;
-  color: #6B7280;
+  font-size: 1.1rem;
+  color: #64748b;
   margin: 0;
+  line-height: 1.5;
+  font-weight: 400;
 }
 
+/* Grid de productos */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
+/* Estilos para el Link que envuelve la Card */
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  height: 100%;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efecto al pasar el mouse por toda la tarjeta */
+.cardLink:hover {
+  transform: translateY(-8px); /* La tarjeta flota hacia arriba */
+}
+
+/* Wrapper de animación de entrada */
 .cardWrapper {
-  animation: fadeInUp 0.6s ease-out;
+  height: 100%;
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0; /* Empieza invisible */
 }
 
+/* Stagger animation (retraso en cascada) */
 .cardWrapper:nth-child(1) { animation-delay: 0ms; }
 .cardWrapper:nth-child(2) { animation-delay: 100ms; }
 .cardWrapper:nth-child(3) { animation-delay: 200ms; }
 .cardWrapper:nth-child(4) { animation-delay: 300ms; }
+.cardWrapper:nth-child(n+5) { animation-delay: 400ms; }
 
+/* Estados de Carga y Error más bonitos */
+.loadingState, .error {
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  padding: 2rem;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.loadingState p {
+  font-size: 1.2rem;
+  color: #64748b;
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+/* Animación de carga simple */
+.loadingState::before {
+  content: '';
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #58c47a;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.error {
+  border: 1px solid #fee2e2;
+  background-color: #fef2f2;
+}
+
+.error p {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+/* Animaciones Keyframes */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
@@ -58,17 +150,43 @@
   }
 }
 
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .title {
+    font-size: 2rem;
+  }
+  .section {
+    padding: 3rem 1.5rem;
+  }
+}
+
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 2rem;
   }
   
   .title {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
   }
   
   .grid {
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+
+  /* En móvil reducimos el efecto hover para evitar toques fantasma */
+  .cardLink:hover {
+    transform: none;
   }
 }

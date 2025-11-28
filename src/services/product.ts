@@ -33,7 +33,7 @@ export interface Product extends ProductFormData {
 }
 
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = 'http://localhost:3000/api';
 // Servicios de Productos
 export const productService = {
   async getProducts() {
@@ -54,19 +54,28 @@ export const productService = {
   },
 
   async updateProduct(id: string, data: Partial<ProductFormData>) {
-    const response = await axios.put(`${API_URL}/products/${id}`, data, {
+    const response = await axios.put(`${API_URL}/products?id=${id}`, data, {
       headers: { 'Content-Type': 'application/json' }
     });
     return response.data;
   },
 
-  async deleteProduct(id: string) {
-    const response = await axios.delete(`${API_URL}/products/${id}`);
+ async deleteProduct(id: string) {
+    const response = await axios.delete(`${API_URL}/products?id=${id}`);
     return response.data;
+  },
+  
+  async getCategories() {
+    try {
+        const products = await this.getProducts();
+        const categories = Array.from(new Set(products.map((p: any) => p.category))).filter(Boolean);
+        return categories as string[];
+    } catch (error) {
+        return [];
+    }
   }
 };
 
-// Servicios de Imágenes
 export const imageService = {
   async uploadImage(file: File): Promise<UploadedImage> {
     const formData = new FormData();

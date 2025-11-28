@@ -18,7 +18,6 @@ export const useCart = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Generar o obtener sessionId
   const getSessionId = useCallback(() => {
     let sessionId = localStorage.getItem('cart_session_id');
     if (!sessionId) {

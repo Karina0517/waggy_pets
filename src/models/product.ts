@@ -20,8 +20,6 @@ export interface IProduct {
   updatedAt?: Date | null;
 }
 
-// ==================== YUP SCHEMAS (EXPORTADOS) ====================
-
 const cloudinaryUrlRegex = /^https:\/\/res\.cloudinary\.com\/.+\/image\/upload\/.+$/;
 
 export const imageShape = yup.object({
@@ -30,15 +28,7 @@ export const imageShape = yup.object({
     .required("La URL es obligatoria")
     .matches(cloudinaryUrlRegex, "URL no válida de Cloudinary"),
   publicId: yup.string().required("El publicId es obligatorio"),
-  width: yup
-    .number()
-    .positive("Width debe ser positivo")
-    .required("El width es obligatorio"),
-  height: yup
-    .number()
-    .positive("Height debe ser positivo")
-    .required("El height es obligatorio"),
-}).noUnknown(true);
+}).noUnknown(true); 
 
 export const mainImageShape = yup.object({
   url: yup
@@ -48,7 +38,6 @@ export const mainImageShape = yup.object({
   publicId: yup.string().required("El publicId del mainImage es obligatorio"),
 }).noUnknown(true);
 
-// Schema para CREAR productos (todos los campos requeridos)
 export const createProductSchema: yup.ObjectSchema<any> = yup
   .object({
     name: yup
@@ -93,7 +82,6 @@ export const createProductSchema: yup.ObjectSchema<any> = yup
   })
   .noUnknown(true);
 
-// Schema para ACTUALIZAR productos (todos los campos opcionales)
 export const updateProductSchema = yup.object({
   name: yup
     .string()
@@ -130,7 +118,6 @@ export const updateProductSchema = yup.object({
   updatedAt: yup.date().nullable().notRequired(),
 }).noUnknown(true);
 
-// Helper para formatear errores de Yup
 export function formatYupErrors(err: yup.ValidationError) {
   const errors: Record<string, string[]> = {};
   err.inner.forEach((e) => {
@@ -141,8 +128,6 @@ export function formatYupErrors(err: yup.ValidationError) {
   return errors;
 }
 
-// ==================== MONGOOSE SCHEMA ====================
-
 const productSchema = new Schema<IProduct>(
   {
     name: { type: String, required: true, trim: true },
@@ -152,8 +137,6 @@ const productSchema = new Schema<IProduct>(
       {
         url: { type: String, required: true },
         publicId: { type: String, required: true },
-        width: { type: Number, required: true },
-        height: { type: Number, required: true },
       },
     ],
     mainImage: {

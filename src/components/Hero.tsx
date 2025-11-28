@@ -6,6 +6,7 @@ import styles from './hero.module.css';
 import { ProductFormModal } from '@/components/ProductFormModal';
 import { useProducts } from '@/hooks/useProducts';
 import { useLanguage } from '@/contexts/LanguageContext';
+import Link from 'next/link';
 
 export const Hero: React.FC = () => {
   const { t } = useLanguage();
@@ -48,23 +49,17 @@ export const Hero: React.FC = () => {
           <p className={styles.description}>{t('hero.description')}</p>
           
           <div className={styles.actions}>
-            <MiButton 
-              variant='primary' 
-              text={t('hero.buttons.addProduct')}
-              onClick={() => setShowFormModal(true)}
-            />
-            <MiButton
-              variant="primary"
-              text={t('hero.buttons.shopAll')}
-              icon={<ArrowRight size={20} />}
-              iconPosition="right"
-              size="lg"
-            />
-            <MiButton
-              variant="ghost"
-              text={t('hero.buttons.viewNew')}
-              size="lg"
-            />
+            
+            <Link href="/products">
+              <MiButton
+                variant="primary"
+                text={t('hero.buttons.shopAll')}
+                icon={<ArrowRight size={20} />}
+                iconPosition="right"
+                size="lg"
+              />
+            </Link>
+
           </div>
 
           <div className={styles.stats}>

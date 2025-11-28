@@ -102,6 +102,7 @@ export default function LoginForm() {
               variant="primary"
               text={isPending ? "Ingresando..." : "Iniciar sesión"}
               disabled={isPending}
+              type="submit" 
             />
           </div>
 

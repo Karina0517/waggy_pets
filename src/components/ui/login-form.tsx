@@ -99,7 +99,7 @@ export default function LoginForm() {
 
           <div className={styles.buttonWrapper}>
             <MiButton
-              variant="primary_1"
+              variant="primary"
               text={isPending ? "Ingresando..." : "Iniciar sesión"}
               disabled={isPending}
             />

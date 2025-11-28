@@ -47,7 +47,7 @@ export function SimpleEmailButton({
       <MiButton
         variant={variant}
         text={loading ? "Enviando..." : buttonText}
-        click={handleClick}
+        onClick={handleClick}
         disabled={loading}
         icon={icon}
       />

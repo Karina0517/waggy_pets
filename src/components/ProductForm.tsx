@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ProductImageUploader } from '@/components/ProductImageUploader';
 import { MiButton } from '@/components/ui/button/Button';
 import { productService } from '@/services/product';
+import Swal from 'sweetalert2';
 import type { ProductFormData, UploadedImage } from '@/services/product';
 import styles from './ProductForm.module.css';
 import { TrashIcon } from '@heroicons/react/24/outline';
@@ -108,30 +109,52 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
   const validateForm = (): boolean => {
     if (!formData.name || !formData.brand || !formData.price) {
-      alert('Por favor completa todos los campos obligatorios');
+      Swal.fire({
+        title: 'Campos incompletos',
+        text: 'Por favor completa todos los campos obligatorios',
+        icon: 'warning',
+        confirmButtonColor: '#f59e0b'
+      });
       return false;
     }
     if (formData.images.length === 0) {
-      alert('Debes subir al menos una imagen');
+      Swal.fire({
+        title: 'Sin imágenes',
+        text: 'Debes subir al menos una imagen del producto',
+        icon: 'warning',
+        confirmButtonColor: '#f59e0b'
+      });
       return false;
     }
     return true;
   };
 
-  const handleReset = () => {
-    setFormData({
-      name: '',
-      brand: '',
-      category: '',
-      description: '',
-      price: 0,
-      quantity: 0,
-      images: [],
-      mainImage: null,
+  const handleReset = async () => {
+    const result = await Swal.fire({
+      title: '¿Limpiar formulario?',
+      text: "Se perderán todos los datos ingresados",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#10b981',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Sí, limpiar',
+      cancelButtonText: 'Cancelar'
     });
+
+    if (result.isConfirmed) {
+      setFormData({
+        name: '',
+        brand: '',
+        category: '',
+        description: '',
+        price: 0,
+        quantity: 0,
+        images: [],
+        mainImage: null,
+      });
+    }
   };
 
-  // --- AQUÍ ESTÁ LA CORRECCIÓN IMPORTANTE ---
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -140,21 +163,18 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     setLoading(true);
 
     try {
-      // 1. PREPARAR DATOS LIMPIOS (Sanitización)
-      // Esto evita el Error 400 enviando solo lo que la API espera
+      // Preparar datos limpios (Sanitización)
       const payload = {
         name: formData.name,
         brand: formData.brand,
         category: formData.category,
         description: formData.description,
-        price: Number(formData.price), // Asegurar que es número
-        quantity: Number(formData.quantity), // Asegurar que es número
-        // Limpiar array de imágenes (quitar _id u otros campos de DB)
+        price: Number(formData.price),
+        quantity: Number(formData.quantity),
         images: formData.images.map(img => ({
           url: img.url,
           publicId: img.publicId
         })),
-        // Limpiar mainImage
         mainImage: formData.mainImage ? {
           url: formData.mainImage.url,
           publicId: formData.mainImage.publicId
@@ -164,16 +184,41 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       console.log("Enviando payload limpio:", payload);
 
       if (isEditing && initialData?._id) {
-        // --- EDICIÓN ---
-        // Enviamos 'payload', NO 'formData'
+        // EDICIÓN
         await productService.updateProduct(initialData._id, payload);
-        alert('Producto actualizado exitosamente');
+        
+        await Swal.fire({
+          title: '¡Actualizado!',
+          text: 'El producto ha sido actualizado exitosamente',
+          icon: 'success',
+          confirmButtonColor: '#10b981',
+          timer: 2000,
+          timerProgressBar: true
+        });
       } else {
-        // --- CREACIÓN ---
-        // Enviamos 'payload', NO 'formData'
+        // CREACIÓN
         await productService.createProduct(payload);
-        alert('Producto creado exitosamente');
-        handleReset();
+        
+        await Swal.fire({
+          title: '¡Creado!',
+          text: 'El producto ha sido creado exitosamente',
+          icon: 'success',
+          confirmButtonColor: '#10b981',
+          timer: 2000,
+          timerProgressBar: true
+        });
+        
+        // Limpiar formulario solo en creación
+        setFormData({
+          name: '',
+          brand: '',
+          category: '',
+          description: '',
+          price: 0,
+          quantity: 0,
+          images: [],
+          mainImage: null,
+        });
       }
       
       if (onSuccess) {
@@ -182,22 +227,37 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             
     } catch (error: any) {
       console.error('Error en submit:', error);
-      // Intentamos mostrar un mensaje más detallado si axios lo devuelve
+      
       const errorMsg = error.response?.data?.error || error.message || 'Ocurrió un error inesperado';
       const errorDetails = error.response?.data?.details ? JSON.stringify(error.response.data.details) : '';
       
-      alert(`${isEditing ? 'Error al actualizar' : 'Error al crear'}: ${errorMsg} ${errorDetails}`);
+      await Swal.fire({
+        title: 'Error',
+        text: `${isEditing ? 'Error al actualizar' : 'Error al crear'}: ${errorMsg} ${errorDetails}`,
+        icon: 'error',
+        confirmButtonColor: '#ef4444'
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = async () => {
     if (isEditing && initialData?._id && onDelete) {
-        // Confirmación nativa
-        if (window.confirm('¿Estás seguro de que quieres eliminar este producto?')) {
-            onDelete(initialData._id);
-        }
+      const result = await Swal.fire({
+        title: '¿Eliminar producto?',
+        text: "Esta acción no se puede deshacer",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+      });
+
+      if (result.isConfirmed) {
+        onDelete(initialData._id);
+      }
     }
   };
 

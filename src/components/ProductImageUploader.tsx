@@ -6,6 +6,7 @@ import { imageService } from '@/services/product';
 import { ImageCard } from '@/components/ImageCard';
 import { FileUploader } from '@/components/FileUploader';
 import { Badge } from '@/components/ui/badge/Badge';
+import Swal from 'sweetalert2';
 import type { UploadedImage, ProductImages } from '@/services/product';
 
 interface ProductImageUploaderProps {
@@ -43,9 +44,25 @@ export const ProductImageUploader: React.FC<ProductImageUploaderProps> = ({
         images: updatedImages,
         mainImage: updatedMainImage,
       });
+
+      await Swal.fire({
+        title: '¡Éxito!',
+        text: `${newImages.length} imagen(es) subida(s) correctamente`,
+        icon: 'success',
+        confirmButtonColor: '#10b981',
+        timer: 2000,
+        timerProgressBar: true
+      });
+
     } catch (error) {
       console.error('Error:', error);
-      alert('Error al subir imágenes');
+      
+      await Swal.fire({
+        title: 'Error',
+        text: 'Error al subir las imágenes. Intenta de nuevo',
+        icon: 'error',
+        confirmButtonColor: '#ef4444'
+      });
     } finally {
       setUploading(false);
       e.target.value = '';
@@ -53,6 +70,19 @@ export const ProductImageUploader: React.FC<ProductImageUploaderProps> = ({
   };
 
   const removeImage = async (publicId: string) => {
+    const result = await Swal.fire({
+      title: '¿Eliminar imagen?',
+      text: "Esta acción no se puede deshacer",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
       // Opcional: eliminar de Cloudinary
       // await imageService.deleteImage(publicId);
@@ -70,8 +100,25 @@ export const ProductImageUploader: React.FC<ProductImageUploaderProps> = ({
         images: updated,
         mainImage: updatedMainImage,
       });
+
+      await Swal.fire({
+        title: 'Eliminada',
+        text: 'La imagen ha sido eliminada',
+        icon: 'success',
+        confirmButtonColor: '#10b981',
+        timer: 1500,
+        timerProgressBar: true
+      });
+
     } catch (error) {
       console.error('Error al eliminar imagen:', error);
+      
+      await Swal.fire({
+        title: 'Error',
+        text: 'No se pudo eliminar la imagen',
+        icon: 'error',
+        confirmButtonColor: '#ef4444'
+      });
     }
   };
 

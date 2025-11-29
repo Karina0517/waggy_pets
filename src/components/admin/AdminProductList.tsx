@@ -3,10 +3,11 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { MiButton } from "@/components/ui/button/Button";
-import { ProductFormModal } from "@/components/ProductFormModal"; // Ajusta la ruta
+import { ProductFormModal } from "@/components/ProductFormModal";
 import { PencilSquareIcon, TrashIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { useProducts } from "@/hooks/useProducts"; 
-import { productService } from "@/services/product"; // Importamos el servicio
+import { productService } from "@/services/product";
+import Swal from 'sweetalert2';
 import styles from "./AdminProductList.module.css";
 
 export const AdminProductList = () => {
@@ -26,22 +27,44 @@ export const AdminProductList = () => {
     setIsModalOpen(true);
   };
 
-  // Lógica de eliminar
+  // Lógica de eliminar con SweetAlert2
   const handleDelete = async (id: string) => {
-    // 1. Confirmación
-    if (!confirm("¿Estás seguro de eliminar este producto permanentemente?")) return;
+    const result = await Swal.fire({
+      title: '¿Estás seguro?',
+      text: "Esta acción eliminará el producto permanentemente",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (!result.isConfirmed) return;
 
     try {
-      // 2. Llamada al servicio
       await productService.deleteProduct(id);
-      alert("Producto eliminado correctamente");
       
-      // 3. Refrescar la lista y cerrar modal si está abierto
+      await Swal.fire({
+        title: '¡Eliminado!',
+        text: 'El producto ha sido eliminado correctamente',
+        icon: 'success',
+        confirmButtonColor: '#10b981',
+        timer: 2000,
+        timerProgressBar: true
+      });
+      
       refetch ? refetch() : window.location.reload();
       setIsModalOpen(false);
     } catch (error) {
       console.error("Error eliminando:", error);
-      alert("Hubo un error al eliminar el producto.");
+      
+      await Swal.fire({
+        title: 'Error',
+        text: 'Hubo un error al eliminar el producto',
+        icon: 'error',
+        confirmButtonColor: '#ef4444'
+      });
     }
   };
 
@@ -109,7 +132,6 @@ export const AdminProductList = () => {
                   </span>
                 </td>
                 <td className={styles.actions}>
-                  {/* Botón EDITAR (Tabla) */}
                   <button 
                     onClick={() => handleEdit(product)} 
                     className={styles.iconBtn}
@@ -118,7 +140,6 @@ export const AdminProductList = () => {
                     <PencilSquareIcon className="w-5 h-5" />
                   </button>
                   
-                  {/* Botón ELIMINAR (Tabla) */}
                   <button 
                     onClick={() => handleDelete(product._id)} 
                     className={`${styles.iconBtn} ${styles.danger}`}
@@ -139,9 +160,8 @@ export const AdminProductList = () => {
         onSuccess={handleSuccess}
         initialData={editingProduct} 
         isEditing={!!editingProduct}
-        // Pasamos la función delete al modal por si el usuario quiere borrar desde el formulario
         onDelete={handleDelete} 
       />
     </div>
   );
-};
+}

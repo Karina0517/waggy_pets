@@ -5,6 +5,8 @@ import { ReactNode } from "react";
 import styles from "./layout.module.css";
 import { Providers } from "./providers";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -20,10 +22,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <main className={styles.mainContent}>
             <Providers>
               {children}
+              
             </Providers>
           </main>
           <Footer />
         </LanguageProvider>
+        <ToastContainer />
       </body>
     </html>
   );

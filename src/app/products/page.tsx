@@ -56,7 +56,7 @@ export default function ProductsPage() {
           <div>
             <strong>{productName}</strong>
             <p style={{ margin: 0, fontSize: '0.9rem', color: '#666' }}>
-              ¡Agregado al carrito! 🎉
+              ¡Agregado al carrito! 
             </p>
           </div>
         </div>,

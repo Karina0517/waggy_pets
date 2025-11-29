@@ -144,13 +144,13 @@ export async function GET(request: NextRequest) {
     // Construir opciones de ordenamiento
     const sortOptions = buildSortOptions(searchParams);
 
-    // Ejecutar query con paginación
+    // Ejecutar query con paginación - FIX: Agregar "as any" después de .lean()
     const [products, totalProducts] = await Promise.all([
       Product.find(filterQuery)
         .sort(sortOptions)
         .skip(skip)
         .limit(limit)
-        .lean(),
+        .lean() as any,
       Product.countDocuments(filterQuery),
     ]);
 

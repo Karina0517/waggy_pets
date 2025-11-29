@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Waggy Pets - Petshop Online
 
-## Getting Started
+Waggy Pets es una tienda online de productos para mascotas. **No vendemos animales**, únicamente productos como comida, juguetes, accesorios y artículos de cuidado para tus mascotas.
 
-First, run the development server:
+Este proyecto está desarrollado con **Next.js + TypeScript** y cuenta con funcionalidades avanzadas para usuarios y administradores.
+
+---
+
+## Características Principales
+
+- **Usuarios:**
+  - Explorar productos por categoría, marca, precio, stock y rating.
+  - Paginación y filtrado del lado del servidor.
+  - Agregar productos al carrito de compras.
+  - Notificaciones al agregar productos (Toastify y SweetAlert).
+  - Internacionalización con i18n.
+
+- **Administradores:**
+  - Dashboard protegido con login.
+  - CRUD de productos con opción de subir varias imágenes por producto (Cloudinary).
+  - Gestión de productos con validaciones (Yup).
+  - Envío de correos automáticos mediante Cron Jobs y Nodemailer.
+
+- **Tecnologías y librerías usadas:**
+  - Next.js + TypeScript
+  - NextAuth (Google)
+  - Docker
+  - Nodemailer (envío de emails)
+  - HeroUI y MUI (componentes)
+  - Toastify y SweetAlert (notificaciones)
+  - SCSS, CSS Modules y Tailwind (estilos)
+  - Yup (validaciones front y back)
+  - Cypress (pruebas unitarias y E2E)
+  - Cloudinary (subida de imágenes)
+  - Paginación y filtrado del lado del servidor
+
+---
+
+## Requisitos Previos
+
+Antes de ejecutar el proyecto, asegúrate de tener instalados:
+
+- [Node.js](https://nodejs.org/) (v18+ recomendada)
+- [npm](https://www.npmjs.com/)
+- [Docker](https://www.docker.com/) (opcional, si quieres levantar servicios en contenedores)
+- Una cuenta de Google para autenticación NextAuth
+- Configuración de Cloudinary para subir imágenes
+- Configuración de variables de entorno (ver sección más abajo)
+
+---
+
+## Instalación y Ejecución
+
+1. **Clonar el repositorio:**
 
 ```bash
+
+git clone https://github.com/Karina0517/waggy_pets.git
+cd waggy_pets
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Credenciales de Administrador
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Para acceder al dashboard de administración:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Email:** karina@correo.com
+- **Contraseña:** 1234567
 
-## Learn More
+El dashboard permite crear, editar, eliminar productos y subir varias imágenes por producto.
 
-To learn more about Next.js, take a look at the following resources:
+## Funcionalidades Avanzadas
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Carrito de compras con persistencia en base de datos
+- Filtros y paginación del lado del servidor para una mejor performance
+- Notificaciones en tiempo real usando Toastify y SweetAlert
+- Validaciones front y back con Yup
+- Formularios de creación de producto con carga de imágenes en Cloudinary
+- Cron Jobs para tareas automáticas como envío de emails diarios
+- Internacionalización (i18n) para múltiples idiomas
+- Pruebas unitarias y E2E con Cypress
